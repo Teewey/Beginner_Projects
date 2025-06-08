@@ -3,7 +3,10 @@
 # Import the random module
 from random import randint
 
+# Define the total rounds counter variable
 total_rounds = 0
+
+# Define an input function which let's you quit at any time
 
 
 def get_input(prompt):
@@ -14,11 +17,12 @@ def get_input(prompt):
     return user_input
 
 
-# Print welcome message and choose difficulty
+# Print welcome message
 print("Welcome, let's play the numbers game! Can you guess the correct number? (type 'quit' to exit)")
 
-
+# Create a while loop to play multiple times
 while True:
+    # Let the user choose difficulty, easy, medium or hard.
     select_difficulty = get_input(
         "Start by choosing difficulty\nEasy (1-5)\nMedium (1-10)\nHard (1-50)\nInput:\n")
 
@@ -26,13 +30,14 @@ while True:
         select_difficulty = get_input(
             "Please select one of the difficulties: Easy, Medium or Hard:\n")
 
+    # Define a function to call depending on difficulty
     def play_loop(range_start, range_end):
         global total_rounds
         guesses = 0
         # Define variable and set a range of randint
         random_number = randint(range_start, range_end)
 
-        # Create a while loop, ask the player to input a number between 1-5
+        # Create a while loop, ask the player to input a number
         # Guess until correct
 
         while True:
@@ -54,6 +59,7 @@ while True:
             elif player_guess > random_number:
                 print("Too high, try again!")
 
+    # Call the play_loop function based on selected difficulty
     if select_difficulty == "easy":
         play_loop(1, 5)
     elif select_difficulty == "medium":
@@ -61,8 +67,10 @@ while True:
     elif select_difficulty == "hard":
         play_loop(1, 50)
 
+    # Showing total number of rounds played
     print(f"You have played {total_rounds} times")
 
+    # Ask if the user wants to play again
     while True:
         try_again = get_input("Wanna play again (yes/no)?\n")
         if try_again == "yes":
