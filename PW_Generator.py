@@ -120,27 +120,7 @@ while True:
 
     new_settings = False
 
-    # Include at least one character from each selected character set
-    required_chars = []
-    for charset in allowed_chars:
-        random_char = secrets.choice(charset)
-        required_chars.append(random_char)
-
-    # Combine all selected character sets into a single pool for random picks
-    allowed_chars_joined = ''.join(allowed_chars)
-
-    # Already added one required character per set, fill the remaining length
-    new_length = length - len(required_chars)
-
-    # Fill remaining password length with random allowed characters
-    password = []
-    for i in range(new_length):
-        random_allow = secrets.choice(allowed_chars_joined)
-        password.append(random_allow)
-
-    password.extend(required_chars)
-    random.shuffle(password)
-    password = ''.join(password)
+    password = generate_password(allowed_chars, length)
     print(password)
 
     # Ask if the user wants to generate another password with the same settings
