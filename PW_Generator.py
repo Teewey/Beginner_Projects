@@ -43,6 +43,32 @@ def get_allowed_chars(lower, upper, numbers, characters):
     return sets
 
 
+def generate_password(allowed_chars, length):
+    """Generates the password and returns it."""
+    # Include at least one character from each selected character set
+    required_chars = []
+    for charset in allowed_chars:
+        random_char = secrets.choice(charset)
+        required_chars.append(random_char)
+
+    # Combine all selected character sets into a single pool for random picks
+    allowed_chars_joined = ''.join(allowed_chars)
+
+    # Already added one required character per set, fill the remaining length
+    new_length = length - len(required_chars)
+
+    # Fill remaining password length with random allowed characters
+    password = []
+    for i in range(new_length):
+        random_allow = secrets.choice(allowed_chars_joined)
+        password.append(random_allow)
+
+    password.extend(required_chars)
+    random.shuffle(password)
+    password = ''.join(password)
+    return password
+
+
 # a-z, A-Z, 0-9 and common special characters
 lowercase = string.ascii_lowercase
 uppercase = string.ascii_uppercase
