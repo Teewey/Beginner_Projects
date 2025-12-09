@@ -60,7 +60,7 @@ while True:
     if new_settings:
         length = input_valid_int(
             'Enter password length: ',
-            'Error: Your password must include at least one character!')
+            'Error: Enter a positive number greater than 0!')
         numbers = input_valid_string(
             'Should numbers be included? (y/n): ',
             'Error: Enter "y" or "n"',
