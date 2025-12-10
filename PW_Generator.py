@@ -73,7 +73,7 @@ def generate_password(allowed_chars, length):
 lowercase = string.ascii_lowercase
 uppercase = string.ascii_uppercase
 digits = string.digits
-special_characters = string.punctuation
+special_characters = '!#$%&()*+,-./:;<=>?@[]^_{|}~'
 
 # Controls whether we ask for new settings or reuse the previous ones
 new_settings = True
