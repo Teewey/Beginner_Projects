@@ -1,8 +1,5 @@
-# TODO: Do an API check against HIBP. If the generated password is leaked, generate a new one before printing it.
-# TODO: Move the password generation logic into a separate function.
+# TODO: Do an API check against HIBP. If the generated password is leaked generate a new one before printing it.
 
-
-import random
 import secrets
 import string
 
@@ -32,13 +29,13 @@ def input_valid_string(question, error_message, possible_answers):
 def get_allowed_chars(lower, upper, numbers, characters):
     """Return a list of character sets based on the user's choices."""
     sets = []
-    if lower == 'y' or lower == "yes":
+    if lower in ('y', 'yes'):
         sets.append(lowercase)
-    if upper == 'y' or upper == "yes":
+    if upper in ('y', 'yes'):
         sets.append(uppercase)
-    if numbers == 'y' or numbers == "yes":
+    if numbers in ('y', 'yes'):
         sets.append(digits)
-    if characters == 'y' or characters == "yes":
+    if characters in ('y', 'yes'):
         sets.append(special_characters)
     return sets
 
@@ -80,8 +77,6 @@ new_settings = True
 
 print('Welcome to the password generator!\n')
 
-# Main loop: read settings (once) and generate passwords
-
 while True:
     if new_settings:
         length = input_valid_int(
@@ -105,7 +100,8 @@ while True:
             ('y', 'yes', 'no', 'n'))
 
         # Minimum length based on number of selected character sets
-        allowed_chars = get_allowed_chars(lower, upper, numbers, characters)
+        allowed_chars = get_allowed_chars(
+            lower, upper, numbers, characters)
         min_length = len(allowed_chars)
 
         if min_length == 0:
@@ -118,17 +114,26 @@ while True:
                 f'Error: With your choices, the password needs to be at least {min_length} characters.')
             continue
 
-    new_settings = False
-
     password = generate_password(allowed_chars, length)
     print(password)
 
-    # Ask if the user wants to generate another password with the same settings
+    # Ask if the user wants to generate another password
     new_password = input_valid_string(
-        '\nHow would you like to proceed?\n[1] Generate a new password using the same settings.\n[2] Generate a new password using new settings.\n[3] Exit script.\nChoose an option: ',
+        '\nHow would you like to proceed?\n'
+        '[1] Generate a new password using the same settings.\n'
+        '[2] Generate a new password using new settings.\n'
+        '[3] Exit script.\n'
+        'Choose an option: ',
         'Error: Choose an option 1-3',
         ('1', '2', '3'),
     ).lower()
 
-    if new_password == 'n' or new_password == "no":
+    if new_password == '1':
+        new_settings = False
+    elif new_password == '2':
+        new_settings = True
+    else:
         break
+
+
+print('Exiting...')
