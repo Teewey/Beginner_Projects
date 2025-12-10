@@ -13,7 +13,7 @@ def input_valid_int(question, error_message):
     """Prompt the user until they enter a positive integer."""
     while True:
         length = input(question)
-        if length.isdigit() and length != '0':
+        if length.isdigit() and int(length) > 0:
             return int(length)
         else:
             print(error_message)
