@@ -64,7 +64,7 @@ def generate_password(allowed_chars, length):
         password.append(random_allow)
 
     password.extend(required_chars)
-    random.shuffle(password)
+    secrets.SystemRandom().shuffle(password)
     password = ''.join(password)
     return password
 
