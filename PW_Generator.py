@@ -125,9 +125,9 @@ while True:
 
     # Ask if the user wants to generate another password with the same settings
     new_password = input_valid_string(
-        '\nDo you want to generate a new password using the same settings? (y/n): ',
-        'Error: Enter "y" or "n"',
-        ('y', 'yes', 'n', 'no'),
+        '\nHow would you like to proceed?\n[1] Generate a new password using the same settings.\n[2] Generate a new password using new settings.\n[3] Exit script.\nChoose an option: ',
+        'Error: Choose an option 1-3',
+        ('1', '2', '3'),
     ).lower()
 
     if new_password == 'n' or new_password == "no":
