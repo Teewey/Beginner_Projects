@@ -1,7 +1,10 @@
-# TODO: Do an API check against HIBP. If the generated password is leaked generate a new one before printing it.
+
 
 import secrets
 import string
+import hashlib
+import requests
+
 
 # Password generator
 
@@ -66,6 +69,33 @@ def generate_password(allowed_chars, length):
     return password
 
 
+def hibp_check(password):
+    """Check password against HIBP."""
+    sha1_obj = hashlib.sha1(password.encode("utf-8"))
+    sha1_hex = sha1_obj.hexdigest().upper()
+    prefix = sha1_hex[:5]
+    suffix = sha1_hex[5:]
+    url = f"https://api.pwnedpasswords.com/range/{prefix}"
+    try:
+        response = requests.get(url, timeout=3)
+    except requests.RequestException:
+        return None
+
+    if response.status_code != 200:
+        return None
+
+    body = response.text
+    lines = body.splitlines()
+
+    for line in lines:
+        if line.startswith(suffix + ":"):
+            # Password is pwned
+            return True
+
+    # If no leak was found
+    return False
+
+
 # a-z, A-Z, 0-9 and common special characters
 lowercase = string.ascii_lowercase
 uppercase = string.ascii_uppercase
@@ -114,8 +144,25 @@ while True:
                 f'Error: With your choices, the password needs to be at least {min_length} characters.')
             continue
 
-    password = generate_password(allowed_chars, length)
-    print(password)
+    # Generates the password and checks it against HIBP
+
+    while True:
+        password = generate_password(allowed_chars, length)
+
+        hibp = hibp_check(password)
+
+        if hibp is None:
+            print(
+                '\nError: Failed to check if the password has been included in any leaks online. Please be aware!')
+            break
+        elif hibp is False:
+            print('\nThe password was not found in any leaks online, congrats!')
+            break
+        else:
+            print("Generated password was found in leaks, generating a new one...")
+            continue
+
+    print(f'Password: {password}')
 
     # Ask if the user wants to generate another password
     new_password = input_valid_string(
