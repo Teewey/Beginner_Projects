@@ -149,6 +149,7 @@ while True:
     while True:
         password = generate_password(allowed_chars, length)
 
+        print('\nWill now attempt to check the password against Haveibeenpwned, for any leaks online...')
         hibp = hibp_check(password)
 
         if hibp is None:
@@ -159,7 +160,7 @@ while True:
             print('\nThe password was not found in any leaks online, congrats!')
             break
         else:
-            print("Generated password was found in leaks, generating a new one...")
+            print('\nThe generated password was found in leaks, generating a new one...')
             continue
 
     print(f'Password: {password}')
